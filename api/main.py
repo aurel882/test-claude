@@ -4,6 +4,8 @@ API REST FastAPI pour CreditScore Pro
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import HTMLResponse
 from pathlib import Path
 import sys
 
@@ -40,6 +42,14 @@ app.add_middleware(
 # Variables globales
 moteur = None
 calc = CalculateurCredit()
+
+# Chemins
+BASE_DIR = Path(__file__).parent.parent
+WEBAPP_DIR = BASE_DIR / "webapp"
+
+# Montage des fichiers statiques
+if WEBAPP_DIR.exists():
+    app.mount("/static", StaticFiles(directory=str(WEBAPP_DIR / "static")), name="static")
 
 
 # ============================================================
@@ -83,20 +93,27 @@ async def shutdown_event():
 # ROUTES
 # ============================================================
 
-@app.get("/", tags=["Root"])
+@app.get("/", response_class=HTMLResponse, tags=["Root"])
 async def root():
-    """Page d'accueil de l'API."""
-    return {
-        "message": "Bienvenue sur CreditScore Pro API",
-        "version": "1.0.0",
-        "documentation": "/docs",
-        "endpoints": {
-            "health": "/health",
-            "analyser": "/analyser (POST)",
-            "calculer_mensualite": "/calculer/mensualite",
-            "calculer_capacite": "/calculer/capacite"
+    """Page d'accueil - Interface web."""
+    index_path = WEBAPP_DIR / "templates" / "index.html"
+
+    if index_path.exists():
+        with open(index_path, 'r', encoding='utf-8') as f:
+            return HTMLResponse(content=f.read())
+    else:
+        return {
+            "message": "Bienvenue sur CreditScore Pro API",
+            "version": "1.0.0",
+            "documentation": "/docs",
+            "web_interface": "Interface web non disponible",
+            "endpoints": {
+                "health": "/health",
+                "analyser": "/analyser (POST)",
+                "calculer_mensualite": "/calculer/mensualite",
+                "calculer_capacite": "/calculer/capacite"
+            }
         }
-    }
 
 
 @app.get("/health", response_model=HealthCheck, tags=["Health"])

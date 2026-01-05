@@ -17,6 +17,11 @@ from sklearn.ensemble import HistGradientBoostingClassifier
 from .config import CONFIG, CAT_COLS, NUM_COLS, DATA_PATH, MODEL_PATH
 
 
+def to_dense_array(x):
+    """Convertit une matrice sparse en dense si nécessaire."""
+    return x.toarray() if hasattr(x, 'toarray') else x
+
+
 class ModelTrainer:
     """Classe pour entraîner et sauvegarder le modèle ML."""
 
@@ -124,7 +129,7 @@ class ModelTrainer:
         ])
 
         to_dense = FunctionTransformer(
-            lambda x: x.toarray() if hasattr(x, 'toarray') else x,
+            to_dense_array,
             accept_sparse=True
         )
 

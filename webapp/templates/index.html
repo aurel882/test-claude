@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CréditScore Pro - Analyse de Crédit Intelligente</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <circle cx="20" cy="20" r="18" fill="url(#gradient)"/>
+                        <path d="M20 10 L20 30 M12 20 L28 20" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                        <defs>
+                            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#6366f1"/>
+                                <stop offset="100%" style="stop-color:#a855f7"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <h1>CréditScore Pro</h1>
+                </div>
+                <p class="tagline">Analyse de crédit intelligente avec IA</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Introduction -->
+            <section class="intro">
+                <h2>Analysez votre demande de crédit en quelques secondes</h2>
+                <p>Notre système combine intelligence artificielle et règles bancaires françaises pour vous donner une réponse immédiate</p>
+            </section>
+
+            <!-- Form -->
+            <section class="form-section">
+                <div class="form-card">
+                    <h3>Vos informations</h3>
+                    <form id="creditForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="revenu">
+                                    <span class="icon">💰</span>
+                                    Revenu annuel (€)
+                                </label>
+                                <input type="number" id="revenu" name="revenu_annuel" required min="0" step="1000" value="50000">
+                                <span class="helper">Votre revenu net annuel</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="montant">
+                                    <span class="icon">🏠</span>
+                                    Montant du crédit (€)
+                                </label>
+                                <input type="number" id="montant" name="montant_credit" required min="0" step="1000" value="200000">
+                                <span class="helper">Montant que vous souhaitez emprunter</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="duree">
+                                    <span class="icon">📅</span>
+                                    Durée (années)
+                                </label>
+                                <input type="number" id="duree" name="duree_annees" required min="1" max="25" value="20">
+                                <div class="slider-value">
+                                    <span id="dureeValue">20</span> ans
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="age">
+                                    <span class="icon">🎂</span>
+                                    Votre âge
+                                </label>
+                                <input type="number" id="age" name="age" required min="18" max="75" value="35">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="anciennete">
+                                    <span class="icon">💼</span>
+                                    Ancienneté emploi (années)
+                                </label>
+                                <input type="number" id="anciennete" name="anciennete_emploi" min="0" max="50" step="0.5" value="5">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="enfants">
+                                    <span class="icon">👶</span>
+                                    Enfants à charge
+                                </label>
+                                <input type="number" id="enfants" name="nb_enfants" min="0" max="10" value="2">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="charges">
+                                    <span class="icon">📋</span>
+                                    Charges mensuelles (€)
+                                </label>
+                                <input type="number" id="charges" name="charges_existantes" min="0" step="50" value="500">
+                                <span class="helper">Crédits en cours, loyer, etc.</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="apport">
+                                    <span class="icon">💎</span>
+                                    Apport personnel (€)
+                                </label>
+                                <input type="number" id="apport" name="apport" min="0" step="1000" value="20000">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-submit" id="submitBtn">
+                            <span class="btn-text">Analyser mon dossier</span>
+                            <span class="btn-loader" style="display: none;">
+                                <span class="spinner"></span>
+                                Analyse en cours...
+                            </span>
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Results -->
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <div class="results-card">
+                    <!-- Decision Badge -->
+                    <div class="decision-container">
+                        <div class="decision-badge" id="decisionBadge"></div>
+                    </div>
+
+                    <!-- Metrics Grid -->
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-icon">💰</div>
+                            <div class="metric-value" id="mensualite">-</div>
+                            <div class="metric-label">Mensualité</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-icon">%</div>
+                            <div class="metric-value" id="taux">-</div>
+                            <div class="metric-label">Taux d'intérêt</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-icon">📊</div>
+                            <div class="metric-value" id="score">-</div>
+                            <div class="metric-label">Score global</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-icon">💳</div>
+                            <div class="metric-value" id="endettement">-</div>
+                            <div class="metric-label">Taux d'endettement</div>
+                        </div>
+                    </div>
+
+                    <!-- Details -->
+                    <div class="details-section">
+                        <h4>Détails de votre financement</h4>
+                        <div class="details-grid" id="detailsGrid"></div>
+                    </div>
+
+                    <!-- Alerts -->
+                    <div class="alerts-section" id="alertsSection"></div>
+
+                    <!-- Recommendations -->
+                    <div class="recommendations-section" id="recommendationsSection"></div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>⚠️ Cette application est un outil éducatif et de démonstration. Elle ne constitue pas une offre de prêt.</p>
+            <p>Pour toute demande réelle, consultez un établissement bancaire agréé.</p>
+        </div>
+    </footer>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

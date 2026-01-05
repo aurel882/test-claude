@@ -129,7 +129,29 @@ Une solution complète d'évaluation de demandes de crédit combinant intelligen
 
 ## 🎮 Utilisation
 
-### 1. Notebook Jupyter
+### 1. Interface Web (Recommandé ⭐)
+
+**Interface web moderne et intuitive** - La façon la plus simple d'utiliser l'application !
+
+```bash
+# Lancer l'application
+python api/main.py
+
+# Ou avec uvicorn
+python -m uvicorn api.main:app --reload
+```
+
+**Accéder à l'interface** : Ouvrez votre navigateur sur `http://localhost:8000`
+
+**Fonctionnalités** :
+- ✨ Design moderne et responsive
+- 📱 Compatible mobile et desktop
+- 🎨 Interface intuitive et facile à utiliser
+- 📊 Résultats visuels avec métriques claires
+- 💡 Recommandations personnalisées
+- ⚡ Analyse en temps réel
+
+### 2. Notebook Jupyter
 
 Interface interactive avec visualisations élaborées.
 
@@ -143,7 +165,7 @@ jupyter notebook notebooks/CreditScore_Pro.ipynb
 - Visualisations Plotly (jauges, graphiques, tableaux d'amortissement)
 - Explications pédagogiques du modèle
 
-### 2. API REST
+### 3. API REST
 
 API FastAPI pour intégration dans vos applications.
 
@@ -199,7 +221,7 @@ curl -X POST "http://localhost:8000/analyser" \
   }'
 ```
 
-### 3. Interface en ligne de commande
+### 4. Interface en ligne de commande
 
 CLI pour analyse rapide en terminal.
 
@@ -235,9 +257,21 @@ python cli.py analyser --revenu 50000 --montant 200000 --duree 20 --age 35 --jso
 
 ## 🎓 Entraînement du modèle
 
+### Génération des données
+
+Si vous n'avez pas le dataset original, générez des données synthétiques :
+
+```bash
+python generate_data.py
+```
+
+Cela créera un fichier `data/application_train.csv` avec 10,000 dossiers synthétiques réalistes.
+
 ### Données
 
-Le dataset `application_train.csv` (Home Credit Default Risk) doit être placé dans `data/`.
+Le dataset `application_train.csv` peut être :
+- Généré synthétiquement avec `generate_data.py` (recommandé pour démo)
+- Téléchargé depuis Home Credit Default Risk (Kaggle)
 
 **Features utilisées** :
 - **Démographiques** : âge, situation familiale, éducation, logement
@@ -288,7 +322,7 @@ python train_model.py
 ```
 test-claude/
 ├── data/
-│   └── application_train.csv       # Dataset (166 MB, Git LFS)
+│   └── application_train.csv       # Dataset (généré ou téléchargé)
 │
 ├── src/                             # Code source
 │   ├── __init__.py
@@ -302,12 +336,20 @@ test-claude/
 │   ├── main.py                      # Application FastAPI
 │   └── schemas.py                   # Schémas Pydantic
 │
+├── webapp/                          # Interface Web ⭐
+│   ├── static/
+│   │   ├── css/style.css           # Styles modernes
+│   │   └── js/app.js               # Logique frontend
+│   └── templates/
+│       └── index.html              # Page principale
+│
 ├── notebooks/
 │   └── CreditScore_Pro.ipynb        # Notebook interactif
 │
 ├── models/
 │   └── credit_model.pkl             # Modèle entraîné (généré)
 │
+├── generate_data.py                 # Générateur de données synthétiques
 ├── cli.py                           # Interface CLI
 ├── train_model.py                   # Script d'entraînement
 ├── requirements.txt                 # Dépendances
